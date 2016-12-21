@@ -6,11 +6,13 @@ RUN apk --update add redis php5-apache2 curl php5-cli php5-json php5-phar php5-o
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     mkdir /run/apache2/ && chown -R apache:apache /run/apache2/
 
+ENV RELEASE=master
+
 RUN cd /var/www/localhost && \
-    curl -q  https://codeload.github.com/sasanrose/phpredmin/tar.gz/v1.0.0 > phpredmin-1.0.0.tar.gz && \
-    tar xzf  phpredmin-1.0.0.tar.gz && \
-    rm phpredmin-1.0.0.tar.gz && \
-    rm -rf htdocs/ && mv phpredmin-1.0.0 htdocs
+    curl -q  https://github.com/sasanrose/phpredmin/archive/$RELEASE.tar.gz > phpredmin-$RELEASE.tar.gz && \
+    tar xzf  phpredmin-$RELEASE.tar.gz && \
+    rm phpredmin-$RELEASE.tar.gz && \
+    rm -rf htdocs/ && mv phpredmin-$RELEASE htdocs
 
 COPY files/config.php /var/www/localhost/htdocs/config.php
 COPY files/run.sh /var/www/localhost/run.sh
